@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>asu-httpclient</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <!--        <slf4j.version>1.7.25</slf4j.version>-->
+        <!--        <logback.version>1.2.3</logback.version>-->
+        <!--        <lombok.version>1.18.20</lombok.version>-->
+        <!--        <junit.version>4.12</junit.version>-->
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>2.7.18</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <dependencies>
+<!--        <dependency>-->
+<!--            <groupId>me.asu</groupId>-->
+<!--            <artifactId>asu-toolkit</artifactId>-->
+<!--            <version>1.0.0-SNAPSHOT</version>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <scope>test</scope>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <!-- lombok -->
+            <plugin>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok-maven-plugin</artifactId>
+                <configuration>
+                    <encoding>utf-8</encoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>delombok</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
