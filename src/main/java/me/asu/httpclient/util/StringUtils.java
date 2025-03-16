@@ -1,4 +1,4 @@
-package me.asu.http.util;
+package me.asu.httpclient.util;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

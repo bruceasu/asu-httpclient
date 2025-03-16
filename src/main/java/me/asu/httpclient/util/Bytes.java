@@ -1,6 +1,6 @@
-package me.asu.util;
+package me.asu.httpclient.util;
 
-import me.asu.text.Hex;
+import me.asu.httpclient.text.Hex;
 
 import java.io.*;
 import java.math.BigInteger;

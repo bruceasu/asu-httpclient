@@ -1,6 +1,6 @@
-package me.asu.http.entity;
+package me.asu.httpclient.entity;
 
-import me.asu.http.Constants;
+import me.asu.httpclient.Constants;
 
 public class ByteArrayEntity implements SimpleEntity {
 

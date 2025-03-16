@@ -1,6 +1,6 @@
-package me.asu.lang.map;
+package me.asu.httpclient.map;
 
-import me.asu.util.Strings;
+import me.asu.httpclient.util.Strings;
 
 import java.util.Map;
 

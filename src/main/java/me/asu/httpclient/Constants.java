@@ -1,4 +1,4 @@
-package me.asu.http;
+package me.asu.httpclient;
 
 import java.util.regex.Pattern;
 

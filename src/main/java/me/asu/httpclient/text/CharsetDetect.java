@@ -1,6 +1,6 @@
-package me.asu.text;
+package me.asu.httpclient.text;
 
-import me.asu.util.Strings;
+import me.asu.httpclient.util.Strings;
 
 import java.io.File;
 import java.io.FileInputStream;

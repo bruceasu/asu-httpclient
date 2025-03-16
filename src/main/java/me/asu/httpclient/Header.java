@@ -1,6 +1,7 @@
-package me.asu.http;
+package me.asu.httpclient;
 
-import me.asu.lang.map.CaseInsensitiveMap;
+import me.asu.httpclient.map.CaseInsensitiveMap;
+import me.asu.httpclient.map.CustomKeyMap;
 
 import java.util.Collection;
 import java.util.Map;
@@ -9,7 +10,7 @@ import java.util.Set;
 
 public class Header {
 
-    private final CaseInsensitiveMap<String, String> items;
+    private final CustomKeyMap<String, String> items;
 
     private Header() {
         items = new CaseInsensitiveMap<String, String>();
@@ -21,11 +22,11 @@ public class Header {
 
     public static Header create() {
         Header header = new Header();
-        header.set("User-Agent", "Nutz.Robot");
+        header.set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36");
         header.set("Accept-Encoding", "gzip,deflate");
         header.set("Accept", "text/xml,application/xml,application/xhtml+xml,text/html;"
                 + "q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5");
-        header.set("Accept-Language", "en-US,en,zh,zh-CN");
+        header.set("Accept-Language", "en-US,en");
         header.set("Accept-Charset", "ISO-8859-1,*,utf-8");
         header.set("Connection", "keep-alive");
         header.set("Cache-Control", "max-age=0");

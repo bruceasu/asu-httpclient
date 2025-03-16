@@ -1,10 +1,9 @@
-package me.asu.http.entity;
+package me.asu.httpclient.entity;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
-import me.asu.http.Constants;
-import me.asu.util.Bytes;
-import me.asu.util.JsonUtils;
+import me.asu.httpclient.Constants;
+import me.asu.httpclient.util.Bytes;
+import xyz.calvinwilliams.okjson.OKJSON;
 
 @Slf4j
 public class JsonEntity implements SimpleEntity {
@@ -24,12 +23,12 @@ public class JsonEntity implements SimpleEntity {
         if (object == null) {
             return "";
         } else {
-            try {
-                return JsonUtils.stringify(object);
-            } catch (JsonProcessingException e) {
-                log.error("", e);
-                return "";
+            String jsonString = OKJSON.objectToString( object, 0 ) ;
+            if( jsonString == null ) {
+                System.out.println( "okjson.stringToObject failed["+OKJSON.getErrorCode()+"]["+OKJSON.getErrorDesc()+"]" );
+                return null;
             }
+            return jsonString;
         }
     }
 

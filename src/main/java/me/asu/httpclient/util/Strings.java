@@ -1,5 +1,5 @@
 
-package me.asu.util;
+package me.asu.httpclient.util;
 
 import javax.swing.*;
 import java.awt.*;

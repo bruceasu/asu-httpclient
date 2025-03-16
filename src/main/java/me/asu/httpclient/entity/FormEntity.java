@@ -1,9 +1,9 @@
-package me.asu.http.entity;
+package me.asu.httpclient.entity;
 
-import me.asu.http.Constants;
-import me.asu.http.util.ObjectToMap;
-import me.asu.http.util.StringUtils;
-import me.asu.util.Bytes;
+import me.asu.httpclient.Constants;
+import me.asu.httpclient.util.ObjectToMap;
+import me.asu.httpclient.util.StringUtils;
+import me.asu.httpclient.util.Bytes;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;

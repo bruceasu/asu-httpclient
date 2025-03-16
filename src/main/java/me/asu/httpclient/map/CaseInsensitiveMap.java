@@ -1,4 +1,4 @@
-package me.asu.lang.map;
+package me.asu.httpclient.map;
 
 import java.util.Map;
 

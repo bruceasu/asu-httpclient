@@ -1,4 +1,4 @@
-package me.asu.http.entity;
+package me.asu.httpclient.entity;
 
 public interface SimpleEntity {
 

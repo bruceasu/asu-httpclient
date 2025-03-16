@@ -1,17 +1,19 @@
-package me.asu.http;
+package me.asu.httpclient;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import me.asu.http.util.StringUtils;
-import me.asu.text.CharsetDetect;
-import me.asu.util.JsonUtils;
-import me.asu.util.Strings;
+import me.asu.httpclient.util.StringUtils;
+import me.asu.httpclient.text.CharsetDetect;
+import me.asu.httpclient.util.Strings;
+import xyz.calvinwilliams.okjson.OKJSON;
 
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Map;
+
+import static me.asu.httpclient.Constants.UTF_8_CHARSET;
 
 @Data
 @Slf4j
@@ -29,11 +31,42 @@ public class SimpleHttpResponse {
      * 假设content是json数据, 如果不是json数据则抛JSONException异常。
      */
     public <T> T getAsJson(Class<T> klass) throws IOException {
-        String content = getContent("UTF-8");
-        if (StringUtils.isEmpty(content)) {
-            return null;
+        T t;
+        if (storeContentWithFile) {
+            if (tmpFile != null) {
+                throw new IOException("Not a json file");
+            }
+            t = OKJSON.fileToObject(tmpFile.getAbsolutePath().toLowerCase(), klass, 0);
+        } else {
+            String content = getContent(UTF_8_CHARSET);
+            if (StringUtils.isEmpty(content)) {
+                return null;
+            }
+            t = OKJSON.stringToObject(content, klass, 0);
         }
-        return JsonUtils.toJson(content, klass);
+
+        if ( t == null) {
+            int code = OKJSON.getErrorCode();
+            String message = OKJSON.getErrorDesc();
+            throw new IOException(code + ":" + message);
+        }
+        return t;
+    }
+
+    public <T> T getAsJsonQuietly(Class<T> klass) {
+        T t;
+        if (storeContentWithFile) {
+            if (tmpFile != null) {
+               return null;
+            }
+            return OKJSON.fileToObject(tmpFile.getAbsolutePath().toLowerCase(), klass, 0);
+        } else {
+            String content = getContent(UTF_8_CHARSET);
+            if (StringUtils.isEmpty(content)) {
+                return null;
+            }
+            return OKJSON.stringToObject(content, klass, 0);
+        }
     }
 
     public String getContent() {
@@ -44,9 +77,10 @@ public class SimpleHttpResponse {
     }
 
     /**
-     * 通常用于返回比较小时，结果保存在内存中。
-     * 如果预期返回比较大的文件，使用<code>InputStream getInputStream()</code>
-     * 比较好。
+     * It is typically used to return a shorter duration, with the results stored in memory.
+     *
+     * If you anticipate returning a relatively large file,
+     * it would be preferable to use <code>InputStream getInputStream()</code>.
      */
     public String getContent(String charset) {
         try {
@@ -88,7 +122,8 @@ public class SimpleHttpResponse {
     }
 
     /**
-     * 通常用于返回比较大时，结果保存在临时文件中。
+     * It is generally used to store the results in a temporary file
+     * when the return value is relatively large.
      *
      * @return
      * @throws IOException

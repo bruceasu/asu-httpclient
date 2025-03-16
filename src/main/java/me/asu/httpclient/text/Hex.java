@@ -1,4 +1,4 @@
-package me.asu.text;
+package me.asu.httpclient.text;
 
 /**
  * Hex Tool.
