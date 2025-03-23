@@ -1,10 +1,7 @@
 package me.asu.httpclient;
 
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
-import me.asu.httpclient.util.StringUtils;
-import me.asu.httpclient.text.CharsetDetect;
-import me.asu.httpclient.util.Strings;
+import me.asu.log.Log;
 import xyz.calvinwilliams.okjson.OKJSON;
 
 import java.io.*;
@@ -16,10 +13,7 @@ import java.util.Map;
 import static me.asu.httpclient.Constants.UTF_8_CHARSET;
 
 @Data
-@Slf4j
 public class SimpleHttpResponse {
-
-
     int statusCode;
     Map<String, List<String>> headers;
     byte[] bodyBytes;
@@ -45,7 +39,7 @@ public class SimpleHttpResponse {
             t = OKJSON.stringToObject(content, klass, 0);
         }
 
-        if ( t == null) {
+        if (t == null) {
             int code = OKJSON.getErrorCode();
             String message = OKJSON.getErrorDesc();
             throw new IOException(code + ":" + message);
@@ -57,7 +51,7 @@ public class SimpleHttpResponse {
         T t;
         if (storeContentWithFile) {
             if (tmpFile != null) {
-               return null;
+                return null;
             }
             return OKJSON.fileToObject(tmpFile.getAbsolutePath().toLowerCase(), klass, 0);
         } else {
@@ -78,7 +72,7 @@ public class SimpleHttpResponse {
 
     /**
      * It is typically used to return a shorter duration, with the results stored in memory.
-     *
+     * <p>
      * If you anticipate returning a relatively large file,
      * it would be preferable to use <code>InputStream getInputStream()</code>.
      */
@@ -92,10 +86,8 @@ public class SimpleHttpResponse {
                 if (bytes == null || bytes.length == 0) {
                     return "";
                 }
-                if (Strings.isEmpty(charset)) {
-                    charset = CharsetDetect.detect(bytes);
-                }
-                if (Strings.isEmpty(charset)) {
+
+                if (StringUtils.isEmpty(charset)) {
                     return new String(bytes, Charset.defaultCharset());
                 } else {
                     return new String(bytes, charset);
@@ -105,17 +97,15 @@ public class SimpleHttpResponse {
                 if (bodyBytes == null) {
                     return "";
                 }
-                if (Strings.isEmpty(charset)) {
-                    charset = CharsetDetect.detect(bodyBytes);
-                }
-                if (Strings.isEmpty(charset)) {
+
+                if (StringUtils.isEmpty(charset)) {
                     return new String(bodyBytes, Charset.defaultCharset());
                 } else {
                     return new String(bodyBytes, charset);
                 }
             }
         } catch (Exception e) {
-            log.error("", e);
+            Log.error("", e);
             return null;
         }
 

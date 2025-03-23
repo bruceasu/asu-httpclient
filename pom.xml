@@ -4,17 +4,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
+    <groupId>me.asu</groupId>
     <artifactId>asu-httpclient</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+        <!-- 用 release=8，比 source/target 更稳（JDK9+ 提供），输出 Java 8 字节码 -->
+        <maven.compiler.release>8</maven.compiler.release>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-        <!--        <slf4j.version>1.7.25</slf4j.version>-->
-        <!--        <logback.version>1.2.3</logback.version>-->
-        <!--        <lombok.version>1.18.20</lombok.version>-->
-        <!--        <junit.version>4.12</junit.version>-->
+        <maven.test.skip>true</maven.test.skip>
+        <lombok.version>1.18.30</lombok.version>   <!-- 兼容 8 -->
     </properties>
 
     <dependencyManagement>
@@ -30,11 +30,6 @@
         </dependencies>
     </dependencyManagement>
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>me.asu</groupId>-->
-<!--            <artifactId>asu-toolkit</artifactId>-->
-<!--            <version>1.0.0-SNAPSHOT</version>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>xyz.calvinwilliams</groupId>
             <artifactId>okjson</artifactId>
@@ -46,14 +41,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <scope>test</scope>
-            <optional>true</optional>
+            <groupId>com.github.bruceasu.asu-log</groupId>
+            <artifactId>asu-log-slf4j</artifactId>
+            <version>v1.0.1</version>
         </dependency>
     </dependencies>
     <build>
@@ -62,6 +52,7 @@
             <plugin>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok-maven-plugin</artifactId>
+                <version>1.18.20.0</version>
                 <configuration>
                     <encoding>utf-8</encoding>
                 </configuration>
@@ -74,6 +65,140 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- 编译：用 release=8 输出 1.8 字节码（即使在 JDK17/21 上编译 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <!--                    <release>${maven.compiler.release}</release>-->
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <encoding>utf-8</encoding>
+                    <compilerArgs>
+                        <!--<arg>-verbose</arg>-->
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+            <!-- Enforcer：阻止用错 JDK & 插件太旧 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <!-- 构建机可用更高 JDK，但输出 release=8；若你强制要求用 JDK8 构建，可设 [1.8,1.9) -->
+                                <requireJavaVersion>
+                                    <version>[1.8,)</version>
+                                </requireJavaVersion>
+                                <requireMavenVersion>
+                                    <version>[3.6.3,)</version>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>false</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <!--<mainClass>com.xxg.Main</mainClass>-->
+                        </manifest>
+                        <manifestEntries>
+                            <Specification-Title>${project.artifactId}</Specification-Title>
+                            <Specification-Version>${project.version}</Specification-Version>
+                            <Implementation-Title>${project.name}</Implementation-Title>
+                            <Implementation-Version>${project.version}</Implementation-Version>
+                            <Built-By>Base Platform Team</Built-By>
+                            <Automatic-Module-Name>me.asu.httpclient</Automatic-Module-Name>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- javadoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.6.3</version>
+                <configuration>
+                    <charset>UTF-8</charset>
+                    <encoding>UTF-8</encoding>
+                    <show>private</show>
+                    <nohelp>true</nohelp>
+                    <doclint>none</doclint>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <skip>${maven.test.skip}</skip>
+                </configuration>
+            </plugin>
+
+
+            <!-- 可选：签名/发布时使用（如要发中央仓库再开启） -->
+            <!--
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-gpg-plugin</artifactId>
+              <version>3.2.4</version>
+              <executions>
+                <execution>
+                  <id>sign-artifacts</id>
+                  <phase>verify</phase>
+                  <goals><goal>sign</goal></goals>
+                </execution>
+              </executions>
+            </plugin>
+            -->
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 </project>

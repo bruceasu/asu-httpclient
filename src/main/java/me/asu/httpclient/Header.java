@@ -1,8 +1,5 @@
 package me.asu.httpclient;
 
-import me.asu.httpclient.map.CaseInsensitiveMap;
-import me.asu.httpclient.map.CustomKeyMap;
-
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -10,10 +7,10 @@ import java.util.Set;
 
 public class Header {
 
-    private final CustomKeyMap<String, String> items;
+    private final CaseInsensitiveMap<String> items;
 
     private Header() {
-        items = new CaseInsensitiveMap<String, String>();
+        items = new CaseInsensitiveMap<String>();
     }
 
     public static Header create(Map<String, String> properties) {

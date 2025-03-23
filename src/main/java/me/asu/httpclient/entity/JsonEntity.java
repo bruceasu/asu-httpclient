@@ -1,11 +1,10 @@
 package me.asu.httpclient.entity;
 
-import lombok.extern.slf4j.Slf4j;
 import me.asu.httpclient.Constants;
-import me.asu.httpclient.util.Bytes;
+import me.asu.httpclient.StringUtils;
+import me.asu.log.Log;
 import xyz.calvinwilliams.okjson.OKJSON;
 
-@Slf4j
 public class JsonEntity implements SimpleEntity {
 
     Object object;
@@ -16,16 +15,16 @@ public class JsonEntity implements SimpleEntity {
 
     @Override
     public byte[] getContent() {
-        return Bytes.toBytes(toContent());
+        return StringUtils.toBytes(toContent());
     }
 
     public String toContent() {
         if (object == null) {
             return "";
         } else {
-            String jsonString = OKJSON.objectToString( object, 0 ) ;
-            if( jsonString == null ) {
-                System.out.println( "okjson.stringToObject failed["+OKJSON.getErrorCode()+"]["+OKJSON.getErrorDesc()+"]" );
+            String jsonString = OKJSON.objectToString(object, 0);
+            if (jsonString == null) {
+                Log.error("okjson.stringToObject failed[" + OKJSON.getErrorCode() + "][" + OKJSON.getErrorDesc() + "]");
                 return null;
             }
             return jsonString;

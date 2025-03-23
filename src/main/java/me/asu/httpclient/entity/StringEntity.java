@@ -1,7 +1,7 @@
 package me.asu.httpclient.entity;
 
 import me.asu.httpclient.Constants;
-import me.asu.httpclient.util.Bytes;
+import me.asu.httpclient.StringUtils;
 
 public class StringEntity implements SimpleEntity {
 
@@ -20,7 +20,7 @@ public class StringEntity implements SimpleEntity {
 
     @Override
     public byte[] getContent() {
-        return str == null ? new byte[0] : Bytes.toBytes(str);
+        return str == null ? new byte[0] : StringUtils.toBytes(str);
     }
 
     @Override
