@@ -42,7 +42,7 @@
         </dependency>
         <dependency>
             <groupId>com.github.bruceasu.asu-log</groupId>
-            <artifactId>asu-log-slf4j</artifactId>
+            <artifactId>asu-log-minlog</artifactId>
             <version>v1.0.1</version>
         </dependency>
     </dependencies>
