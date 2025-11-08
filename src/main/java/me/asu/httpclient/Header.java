@@ -14,7 +14,9 @@ public class Header {
     }
 
     public static Header create(Map<String, String> properties) {
-        return new Header().addAll(properties);
+        Header header = new Header();
+        if (properties != null && !properties.isEmpty()) header.addAll(properties);
+        return header;
     }
 
     public static Header create() {

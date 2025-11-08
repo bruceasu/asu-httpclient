@@ -1,12 +1,13 @@
 package me.asu.httpclient.entity;
 
-import me.asu.httpclient.StringUtils;
+import me.asu.httpclient.util.StringUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Map;
 import java.util.UUID;
 
@@ -54,6 +55,8 @@ public class MultipartEntity implements SimpleEntity {
 
             if (val instanceof File) {
                 readFile((File) val, key, os);
+            } if (val instanceof Path) {
+                readFile(((Path) val).toFile(), key, os);
             } else {
                 String namePart = "Content-Disposition: form-data; name=\"" + key + "\"";
                 os.write(StringUtils.toBytes(namePart));

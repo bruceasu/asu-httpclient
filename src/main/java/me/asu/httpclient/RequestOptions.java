@@ -1,5 +1,6 @@
 package me.asu.httpclient;
 
+import lombok.Builder;
 import lombok.Data;
 import me.asu.httpclient.entity.SimpleEntity;
 

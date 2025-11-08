@@ -1,8 +1,9 @@
 package me.asu.httpclient;
 
 import lombok.Data;
+import me.asu.httpclient.util.OKJSON;
+import me.asu.httpclient.util.StringUtils;
 import me.asu.log.Log;
-import xyz.calvinwilliams.okjson.OKJSON;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -30,13 +31,13 @@ public class SimpleHttpResponse {
             if (tmpFile != null) {
                 throw new IOException("Not a json file");
             }
-            t = OKJSON.fileToObject(tmpFile.getAbsolutePath().toLowerCase(), klass, 0);
+            t = OKJSON.fileToJson(tmpFile.getAbsolutePath().toLowerCase(), klass, 0);
         } else {
             String content = getContent(UTF_8_CHARSET);
             if (StringUtils.isEmpty(content)) {
                 return null;
             }
-            t = OKJSON.stringToObject(content, klass, 0);
+            t = OKJSON.toJson(content, klass, 0);
         }
 
         if (t == null) {
@@ -53,13 +54,13 @@ public class SimpleHttpResponse {
             if (tmpFile != null) {
                 return null;
             }
-            return OKJSON.fileToObject(tmpFile.getAbsolutePath().toLowerCase(), klass, 0);
+            return OKJSON.fileToJson(tmpFile.getAbsolutePath().toLowerCase(), klass, 0);
         } else {
             String content = getContent(UTF_8_CHARSET);
             if (StringUtils.isEmpty(content)) {
                 return null;
             }
-            return OKJSON.stringToObject(content, klass, 0);
+            return OKJSON.toJson(content, klass, 0);
         }
     }
 
@@ -123,6 +124,19 @@ public class SimpleHttpResponse {
             return new FileInputStream(tmpFile);
         } else {
             return new ByteArrayInputStream(bodyBytes);
+        }
+    }
+
+    public byte[] getBody()  {
+        if (storeContentWithFile) {
+            try {
+                return Files.readAllBytes(tmpFile.toPath());
+            } catch (IOException e) {
+                Log.error("", e);
+                return null;
+            }
+        } else {
+            return bodyBytes;
         }
     }
 }

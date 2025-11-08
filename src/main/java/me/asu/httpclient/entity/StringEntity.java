@@ -1,7 +1,7 @@
 package me.asu.httpclient.entity;
 
 import me.asu.httpclient.Constants;
-import me.asu.httpclient.StringUtils;
+import me.asu.httpclient.util.StringUtils;
 
 public class StringEntity implements SimpleEntity {
 
