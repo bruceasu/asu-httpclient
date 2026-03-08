@@ -9,12 +9,12 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <!-- 用 release=8，比 source/target 更稳（JDK9+ 提供），输出 Java 8 字节码 -->
-        <maven.compiler.release>8</maven.compiler.release>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <!-- 用 release=17，比 source/target 更稳（JDK9+ 提供），输出 Java 17 字节码 -->
+        <maven.compiler.release>17</maven.compiler.release>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <maven.test.skip>true</maven.test.skip>
-        <lombok.version>1.18.30</lombok.version>   <!-- 兼容 8 -->
+        <lombok.version>1.18.30</lombok.version>   <!-- 兼容 17 -->
     </properties>
 
     <dependencyManagement>
@@ -23,27 +23,31 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>2.7.18</version>
+                <version>3.5.4</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>xyz.calvinwilliams</groupId>-->
-<!--            <artifactId>okjson</artifactId>-->
-<!--            <version>0.0.10.0</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>xyz.calvinwilliams</groupId>-->
+        <!--            <artifactId>okjson</artifactId>-->
+        <!--            <version>0.0.10.0</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <scope>provided</scope>
         </dependency>
-        <dependency>
+        <!-- <dependency>
             <groupId>com.github.bruceasu.asu-log</groupId>
             <artifactId>asu-log-minlog</artifactId>
             <version>v1.0.1</version>
+        </dependency> -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
@@ -52,7 +56,6 @@
             <plugin>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok-maven-plugin</artifactId>
-                <version>1.18.20.0</version>
                 <configuration>
                     <encoding>utf-8</encoding>
                 </configuration>
@@ -69,9 +72,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version>
+                <!-- <version>3.11.0</version> -->
                 <configuration>
-                    <!--                    <release>${maven.compiler.release}</release>-->
+                    <release>${maven.compiler.release}</release>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                     <encoding>utf-8</encoding>
@@ -93,12 +96,12 @@
                         </goals>
                         <configuration>
                             <rules>
-                                <!-- 构建机可用更高 JDK，但输出 release=8；若你强制要求用 JDK8 构建，可设 [1.8,1.9) -->
+                                <!-- 构建机可用更高 JDK，但输出 release=17；若你强制要求用 JDK17 构建，可设 [17,18) -->
                                 <requireJavaVersion>
-                                    <version>[1.8,)</version>
+                                    <version>[17,)</version>
                                 </requireJavaVersion>
                                 <requireMavenVersion>
-                                    <version>[3.6.3,)</version>
+                                    <version>[3.9.4,)</version>
                                 </requireMavenVersion>
                             </rules>
                         </configuration>
@@ -134,7 +137,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.0</version>
+                <!-- <version>3.0.0</version> -->
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -149,7 +152,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.6.3</version>
+                <!-- <version>3.6.3</version> -->
                 <configuration>
                     <charset>UTF-8</charset>
                     <encoding>UTF-8</encoding>
@@ -170,7 +173,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
+                <!-- <version>3.2.5</version> -->
                 <configuration>
                     <skip>${maven.test.skip}</skip>
                 </configuration>
@@ -195,10 +198,10 @@
         </plugins>
     </build>
 
-    <repositories>
+    <!-- <repositories>
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
-    </repositories>
+    </repositories> -->
 </project>

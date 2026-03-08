@@ -1,6 +1,5 @@
 package me.asu.httpclient;
 
-import lombok.Data;
 import me.asu.httpclient.util.OKJSON;
 import me.asu.httpclient.util.StringUtils;
 import me.asu.log.Log;
@@ -13,7 +12,6 @@ import java.util.Map;
 
 import static me.asu.httpclient.Constants.UTF_8_CHARSET;
 
-@Data
 public class SimpleHttpResponse {
     int statusCode;
     Map<String, List<String>> headers;
@@ -22,13 +20,26 @@ public class SimpleHttpResponse {
     boolean storeContentWithFile = false;
     String charset;
 
+    public int getStatusCode() {return statusCode;}
+    public void setStatusCode(int statusCode) {this.statusCode = statusCode;}
+    public Map<String, List<String>> getHeaders() {return headers;}
+    public void setHeaders(Map<String, List<String>> headers) {this.headers = headers;}
+    public byte[] getBodyBytes() {return bodyBytes;}
+    public void setBodyBytes(byte[] bodyBytes) {this.bodyBytes = bodyBytes;}
+    public File getTmpFile() {return tmpFile;}
+    public void setTmpFile(File tmpFile) {this.tmpFile = tmpFile;}
+    public boolean isStoreContentWithFile() {return storeContentWithFile;}
+    public void setStoreContentWithFile(boolean storeContentWithFile) {this.storeContentWithFile = storeContentWithFile;}
+    public String getCharset() {return charset;}
+    public void setCharset(String charset) {this.charset = charset;}
+
     /**
      * 假设content是json数据, 如果不是json数据则抛JSONException异常。
      */
     public <T> T getAsJson(Class<T> klass) throws IOException {
         T t;
         if (storeContentWithFile) {
-            if (tmpFile != null) {
+            if (tmpFile == null) {
                 throw new IOException("Not a json file");
             }
             t = OKJSON.fileToJson(tmpFile.getAbsolutePath().toLowerCase(), klass, 0);
@@ -51,7 +62,7 @@ public class SimpleHttpResponse {
     public <T> T getAsJsonQuietly(Class<T> klass) {
         T t;
         if (storeContentWithFile) {
-            if (tmpFile != null) {
+            if (tmpFile == null) {
                 return null;
             }
             return OKJSON.fileToJson(tmpFile.getAbsolutePath().toLowerCase(), klass, 0);

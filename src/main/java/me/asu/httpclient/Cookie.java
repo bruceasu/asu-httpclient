@@ -19,13 +19,16 @@ public class Cookie {
     }
 
     public void parse(String str) {
+        if (str == null || str.trim().isEmpty()) {
+            return;
+        }
         String[] ss = str.split(";");
         for (String s : ss) {
-            String[] p = s.split("=]");
+            String[] p = s.trim().split("=", 2);
             if (p.length == 1) {
-                map.put(p[0], "");
+                map.put(p[0].trim(), "");
             } else {
-                map.put(p[0], p[1]);
+                map.put(p[0].trim(), p[1].trim());
             }
         }
     }

@@ -55,7 +55,7 @@ public class MultipartEntity implements SimpleEntity {
 
             if (val instanceof File) {
                 readFile((File) val, key, os);
-            } if (val instanceof Path) {
+            } else if (val instanceof Path) {
                 readFile(((Path) val).toFile(), key, os);
             } else {
                 String namePart = "Content-Disposition: form-data; name=\"" + key + "\"";

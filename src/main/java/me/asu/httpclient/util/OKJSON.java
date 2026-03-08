@@ -8,9 +8,6 @@
 
 package me.asu.httpclient.util;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import me.asu.log.Log;
 
 import java.io.IOException;
@@ -244,8 +241,6 @@ final class Options {
     }
 }
 
-@Setter
-@Getter
 class OkJsonParser {
     private boolean strictPolicyEnable;
     private boolean directAccessPropertyEnable;
@@ -1762,12 +1757,20 @@ class OkJsonParser {
         this.errorCode = 0;
         this.errorDesc = null;
     }
+
+    public boolean isStrictPolicyEnable() {return strictPolicyEnable;}
+    public void setStrictPolicyEnable(boolean strictPolicyEnable) {this.strictPolicyEnable = strictPolicyEnable;}
+    public boolean isDirectAccessPropertyEnable() {return directAccessPropertyEnable;}
+    public void setDirectAccessPropertyEnable(boolean directAccessPropertyEnable) {this.directAccessPropertyEnable = directAccessPropertyEnable;}
+    public boolean isPrettyFormatEnable() {return prettyFormatEnable;}
+    public void setPrettyFormatEnable(boolean prettyFormatEnable) {this.prettyFormatEnable = prettyFormatEnable;}
+    public Integer getErrorCode() {return errorCode;}
+    public void setErrorCode(Integer errorCode) {this.errorCode = errorCode;}
+    public String getErrorDesc() {return errorDesc;}
+    public void setErrorDesc(String errorDesc) {this.errorDesc = errorDesc;}
 }
 
-@Getter
-@Setter
 class OkJsonGenerator {
-    @Data
     static class OkJsonClassField {
         char[] fieldName;
         ClassFieldType type;
@@ -1950,6 +1953,19 @@ class OkJsonGenerator {
         this.errorCode = 0;
         this.errorDesc = null;
     }
+
+    public boolean isStrictPolicyEnable() {return strictPolicyEnable;}
+    public void setStrictPolicyEnable(boolean strictPolicyEnable) {this.strictPolicyEnable = strictPolicyEnable;}
+    public boolean isDirectAccessPropertyEnable() {return directAccessPropertyEnable;}
+    public void setDirectAccessPropertyEnable(boolean directAccessPropertyEnable) {this.directAccessPropertyEnable = directAccessPropertyEnable;}
+    public boolean isPrettyFormatEnable() {return prettyFormatEnable;}
+    public void setPrettyFormatEnable(boolean prettyFormatEnable) {this.prettyFormatEnable = prettyFormatEnable;}
+    public boolean isNullEnable() {return nullEnable;}
+    public void setNullEnable(boolean nullEnable) {this.nullEnable = nullEnable;}
+    public Integer getErrorCode() {return errorCode;}
+    public void setErrorCode(Integer errorCode) {this.errorCode = errorCode;}
+    public String getErrorDesc() {return errorDesc;}
+    public void setErrorDesc(String errorDesc) {this.errorDesc = errorDesc;}
 
     public void stringifyToFile(Object object, String filePath) {
 
